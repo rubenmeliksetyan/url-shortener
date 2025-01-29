@@ -4,7 +4,7 @@ export const getUserFromToken = () => {
     const token = localStorage.getItem('token');
     if (!token) return null;
     try {
-        return jwtDecode(token); // Decode token to get user data
+        return jwtDecode(token);
     } catch {
         return null;
     }

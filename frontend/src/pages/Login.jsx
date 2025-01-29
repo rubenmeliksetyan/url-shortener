@@ -17,7 +17,7 @@ function Login() {
             }, { withCredentials: true });
 
             localStorage.setItem('token', data.token); // Store token
-            navigate('/'); // Redirect to homepage
+            navigate('/');
         } catch (err) {
             console.error(err.response?.data || 'Error logging in');
         }

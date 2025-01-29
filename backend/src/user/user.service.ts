@@ -36,7 +36,7 @@ export class UserService {
     generateJwt(user: User) {
         return jwt.sign(
             { id: user.id, email: user.email },
-            'your_secret_key', // Use an environment variable for production
+            'your_secret_key',
             { expiresIn: '1h' }
         );
     }

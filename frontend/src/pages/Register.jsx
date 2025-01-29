@@ -16,7 +16,7 @@ function Register() {
                 password,
                 name
             });
-            navigate('/login'); // Redirect to login after registration
+            navigate('/login');
         } catch (err) {
             console.error(err.response?.data || 'Error registering');
         }

@@ -7,7 +7,7 @@ function Home() {
 
     useEffect(() => {
         if (!isLoggedIn()) {
-            navigate('/login'); // Redirect if not logged in
+            navigate('/login');
         }
     }, []);
 
