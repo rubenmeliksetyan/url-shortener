@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { User } from './user.entity';
+import {UserDto} from "../common/dto/user.dto";
+import {LoginDto} from "../common/dto/login.dto";
 
 @Injectable()
 export class UserService {
@@ -12,31 +14,37 @@ export class UserService {
         private userRepository: Repository<User>,
     ) {}
 
-    async register(email: string, password: string, name: string): Promise<User> {
-        const hashedPassword = await bcrypt.hash(password, 10);
+    async register(userDto: UserDto): Promise<User> {
+        const hashedPassword = await bcrypt.hash(userDto.password, 10);
         const user = new User();
-        user.email = email;
+        user.email = userDto.email;
         user.password = hashedPassword;
-        user.name = name;
+        user.name = userDto.name;
 
-        return this.userRepository.save(user);
+        return await this.userRepository.save(user)
     }
 
-    async validateUser(email: string, password: string): Promise<any> {
-        const user = await this.userRepository.findOneBy({ email });
-        if (!user) return null;
+    async login(loginDto: LoginDto): Promise<any> {
+        const user = await this.userRepository.findOne({ where: { email: loginDto.email } });
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) return null;
+        if (!user) {
+            throw new HttpException('Invalid credentials', 422);
+        }
 
-        return user;
+        const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+        if (!isPasswordValid) {
+            throw new HttpException('Invalid credentials', 422);
+        }
+
+        const token = this.generateJwt(user)
+
+        return { token };
     }
 
-    // Generate JWT token
-    generateJwt(user: User) {
+    private generateJwt(user: User) {
         return jwt.sign(
             { id: user.id, email: user.email },
-            'your_secret_key',
+            process.env.JWT_SECRET as string,
             { expiresIn: '1h' }
         );
     }

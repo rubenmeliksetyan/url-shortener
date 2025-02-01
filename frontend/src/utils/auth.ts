@@ -1,6 +1,6 @@
-import * as jwtDecode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
-export const getUserFromToken = () => {
+export const getUserFromToken = (): boolean | null => {
     const token = localStorage.getItem('token');
     if (!token) return null;
     try {
@@ -10,4 +10,4 @@ export const getUserFromToken = () => {
     }
 };
 
-export const isLoggedIn = () => !!getUserFromToken();
+export const isLoggedIn = () => getUserFromToken();

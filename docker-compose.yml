@@ -6,6 +6,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend_service
+    volumes:
+      - ./src:/app/src
     env_file:
       - ./backend/.env
     environment:
@@ -38,7 +40,19 @@ services:
       timeout: 10s
     networks:
       - app-network
-
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_service
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    environment:
+      - VITE_API_URL=http://backend:3000/api
 networks:
   app-network:
     driver: bridge

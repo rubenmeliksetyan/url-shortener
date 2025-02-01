@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
+import {Url} from "../url/url.entity";
 
 @Entity()
 export class User {
@@ -13,4 +14,7 @@ export class User {
 
     @Column()
     name: string;
+
+    @OneToMany(() => Url, (url) => url.user)
+    urls: Url[];
 }

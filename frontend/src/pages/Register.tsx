@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function Register() {
     const [name, setName] = useState('');
     const navigate = useNavigate();
 
-    const handleRegister = async (e) => {
+    const handleRegister = async (e: any) => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:3000/api/auth/register', {
@@ -17,7 +17,7 @@ function Register() {
                 name
             });
             navigate('/login');
-        } catch (err) {
+        } catch (err: any) {
             console.error(err.response?.data || 'Error registering');
         }
     };

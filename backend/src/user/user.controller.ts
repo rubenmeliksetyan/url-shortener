@@ -1,5 +1,8 @@
-import {Controller, Post, Body} from '@nestjs/common';
+import {Controller, Post, Body, UsePipes, ValidationPipe, UseFilters} from '@nestjs/common';
 import {UserService} from './user.service';
+import {UserDto} from '../common/dto/user.dto'
+import {User} from './user.entity';
+import {LoginDto} from '../common/dto/login.dto'
 
 @Controller('api/auth')
 export class UserController {
@@ -7,18 +10,14 @@ export class UserController {
     }
 
     @Post('register')
-    async register(@Body() body: { email: string; password: string; name: string }) {
-        return this.userService.register(body.email, body.password, body.name);
+    @UsePipes(new ValidationPipe())
+    async register(@Body() userDto: UserDto): Promise<User> {
+        return this.userService.register(userDto);
     }
 
     @Post('login')
-    async login(@Body() body: { email: string; password: string }) {
-        const user = await this.userService.validateUser(body.email, body.password);
-        if (!user) {
-            throw new Error('Invalid credentials');
-        }
-
-        const token = this.userService.generateJwt(user);
-        return {token};
+    @UsePipes(new ValidationPipe())
+    async login(@Body() loginDto: LoginDto) {
+        return this.userService.login(loginDto);
     }
 }
