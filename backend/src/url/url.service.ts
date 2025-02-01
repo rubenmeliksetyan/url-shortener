@@ -1,10 +1,11 @@
-import {Injectable, NotFoundException, ConflictException} from '@nestjs/common';
+import {Injectable, NotFoundException, ConflictException, Req} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import * as crypto from 'crypto';
 import {Url} from "./url.entity";
 import {User} from "../user/user.entity";
 import {CreateUrlDto, UpdateUrlDto} from "../common/dto/url.dto";
+import {VisitService} from "../visit/visit.service";
 
 @Injectable()
 export class UrlService {
@@ -13,13 +14,14 @@ export class UrlService {
         private readonly urlRepository: Repository<Url>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        private readonly visitService: VisitService
     ) {
     }
 
     async createUrl(createUrlDto: CreateUrlDto): Promise<Url> {
-        const {originalUrl, userId} = createUrlDto;
+        const {originalUrl} = createUrlDto;
 
-        const user = await this.userRepository.findOne({where: {id: userId}});
+        const user = await this.userRepository.findOne({where: {id: createUrlDto.userId}});
         if (!user) {
             throw new NotFoundException('User not found');
         }
@@ -45,10 +47,34 @@ export class UrlService {
         }
 
         url.slug = slug;
+
         return this.urlRepository.save(url);
     }
 
     async findBySlug(slug: string): Promise<Url | null> {
-        return this.urlRepository.findOne({where: {slug: slug}});
+        const url = await this.urlRepository.findOne({where: {slug}});
+        if (!url) {
+            throw new NotFoundException('URL not found');
+        }
+        await this.visitService.trackVisit(url);
+
+        return url;
+    }
+
+    async getUrlStats(slug: string) {
+        const url = await this.urlRepository.findOne({
+            where: { slug },
+            relations: ['visits'],
+        });
+
+        if (!url) {
+            throw new NotFoundException('URL not found');
+        }
+
+        return {
+            originalUrl: url.originalUrl,
+            slug: url.slug,
+            visitCount: url.visits.length,
+        };
     }
 }

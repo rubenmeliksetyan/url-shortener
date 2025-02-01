@@ -8,42 +8,39 @@ import {
     Put,
     UsePipes,
     ValidationPipe,
-    Body, UseGuards
+    Body, UseGuards, Req,
 } from '@nestjs/common';
 import {Response} from 'express';
 import {UrlService} from "./url.service";
 import {CreateUrlDto, UpdateUrlDto} from "../common/dto/url.dto";
 import {Url} from "./url.entity";
 import {AuthGuard} from "../user/auth.guard";
+import {VisitService} from "../visit/visit.service";
 
 @Controller('api/urls')
 @UseGuards(AuthGuard)
 export class UrlController {
-    constructor(private readonly urlService: UrlService) {
-    }
-
-    @Get('resolve/:slug')
-    async getOriginalUrl(@Param('slug') slug: string) {
-        const url = await this.urlService.findBySlug(slug);
-        if (!url) {
-            throw new NotFoundException('URL not found');
-        }
-        return {originalUrl: url.originalUrl};
+    constructor(
+        private readonly urlService: UrlService,
+        private readonly visitService: VisitService
+    ) {
     }
 
     @Get(':slug')
-    async redirectToOriginal(@Param('slug') slug: string, @Res() res: Response) {
+    async redirectToOriginal(@Param('slug') slug: string) {
         const url = await this.urlService.findBySlug(slug);
         if (!url) {
             throw new NotFoundException('URL not found');
         }
-        return res.redirect(url.originalUrl);
+        await this.visitService.trackVisit(url)
+
+        return {originalUrl: url.originalUrl};
     }
 
     @Post('slug')
     @UsePipes(new ValidationPipe())
-    async createSlug(@Body() createUrlDto: CreateUrlDto): Promise<Url> {
-        console.log(createUrlDto);
+    async createSlug(@Body() createUrlDto: CreateUrlDto, @Req() req): Promise<Url> {
+        createUrlDto.userId = req.user.id
         return await this.urlService.createUrl(createUrlDto);
     }
 

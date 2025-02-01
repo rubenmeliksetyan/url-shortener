@@ -1,5 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import {TokenExpiredError} from "jsonwebtoken";
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -9,6 +10,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         let status = HttpStatus.INTERNAL_SERVER_ERROR;
         let message = 'Internal server error';
+
+        if (exception instanceof TokenExpiredError) {
+            status = HttpStatus.UNAUTHORIZED;
+            message = 'Token has expired';
+        }
 
         if (exception instanceof HttpException) {
             status = exception.getStatus();

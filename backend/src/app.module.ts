@@ -5,6 +5,8 @@ import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import {Url} from "./url/url.entity";
 import {UrlModule} from "./url/url.module";
+import {VisitModule} from "./visit/visit.module";
+import {Visit} from "./visit/visit.entity";
 
 @Module({
   imports: [
@@ -16,11 +18,12 @@ import {UrlModule} from "./url/url.module";
       username: process.env.DATABASE_USER || 'user',
       password: process.env.DATABASE_PASSWORD || 'password',
       database: process.env.DATABASE_NAME || 'url_shortener',
-      entities: [User, Url],
+      entities: [User, Url, Visit],
       synchronize: true,
     }),
     UserModule,
     UrlModule,
+    VisitModule
   ],
 })
 export class AppModule {}
