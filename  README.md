@@ -1,8 +1,10 @@
 # 🌍 URL Shortener Service
 
-A **URL shortening service** built with **NestJS (backend)** and **React (frontend)**, using **PostgreSQL** for storage and **Docker** for containerization.
+A **URL shortening service** built with **NestJS (backend)** and **React (frontend)**, using **PostgreSQL** for storage
+and **Docker** for containerization.
 
 ## 🚀 Features
+
 - 🔗 **Shorten URLs** and generate custom slugs
 - 👤 **User authentication (Register/Login)**
 - 📊 **Track visit statistics for shortened URLs**
@@ -13,19 +15,22 @@ A **URL shortening service** built with **NestJS (backend)** and **React (fronte
 ---
 
 ## 🛠️ Tech Stack
-| Technology  | Description |
-|-------------|------------|
-| **Backend** | NestJS (TypeORM, PostgreSQL) |
-| **Frontend** | React (Vite) |
-| **Database** | PostgreSQL |
-| **Containerization** | Docker, Docker Compose |
-| **Authentication** | JWT, bcrypt |
-| **Reverse Proxy** | Nginx |
+
+| Technology           | Description                  |
+|----------------------|------------------------------|
+| **Backend**          | NestJS (TypeORM, PostgreSQL) |
+| **Frontend**         | React (Vite)                 |
+| **Database**         | PostgreSQL                   |
+| **Containerization** | Docker, Docker Compose       |
+| **Authentication**   | JWT, bcrypt                  |
+| **Reverse Proxy**    | Nginx                        |
 
 ---
 
 ## 📦 Installation & Setup
+
 ### **1️⃣ Clone the Repository**
+
 ```sh
 git clone https://github.com/your-usdcxername/url-shortener.git
 cd url-shortener
@@ -82,6 +87,7 @@ docker-compose up --build
 ```sh
 docker-compose down
 ```
+
 🔥 API Endpoints
 
 | Method | Endpoint              | Description              |
