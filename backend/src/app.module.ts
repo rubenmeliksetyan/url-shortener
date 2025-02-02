@@ -7,9 +7,14 @@ import {Url} from "./url/url.entity";
 import {UrlModule} from "./url/url.module";
 import {VisitModule} from "./visit/visit.module";
 import {Visit} from "./visit/visit.entity";
+import {RateLimiterModule} from "nestjs-rate-limiter";
 
 @Module({
   imports: [
+    RateLimiterModule.register({
+      points: 10,
+      duration: 60,
+    }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
