@@ -50,6 +50,7 @@ export class UrlController {
 
     @Get(':slug')
     async redirectToOriginal(@Param('slug') slug: string) {
+        console.log(`🔍 Received request for slug: ${slug} at ${new Date().toISOString()}`);
         const url = await this.urlService.findBySlug(slug);
         if (!url) {
             throw new NotFoundException('URL not found');

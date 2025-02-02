@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from 'typeorm';
-import { Url } from 'src/url/url.entity';
+import {Url} from "../url/url.entity";
 
 @Entity()
 export class Visit {

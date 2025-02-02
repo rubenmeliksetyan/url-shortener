@@ -3,7 +3,7 @@ import {IsString, IsNotEmpty, IsUrl, IsInt, IsOptional} from 'class-validator';
 export class CreateUrlDto {
     @IsUrl()
     @IsNotEmpty()
-    originalUrl: string;
+    originalUrl!: string;
 
     @IsOptional()
     @IsString()

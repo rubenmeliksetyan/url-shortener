@@ -17,6 +17,7 @@ export class Url {
     originalUrl: string;
 
     @ManyToOne(() => User, (user) => user.urls, { onDelete: 'CASCADE' })
+    @Index()
     user: User;
 
     @OneToMany(() => Visit, (visit) => visit.url)

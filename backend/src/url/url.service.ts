@@ -72,7 +72,6 @@ export class UrlService {
         if (!url) {
             throw new NotFoundException('URL not found');
         }
-        await this.visitService.trackVisit(url);
 
         return url;
     }
