@@ -13,7 +13,7 @@ import {Visit} from "./visit/visit.entity";
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: process.env.DATABASE_HOST || 'postgres_db',
       port: parseInt(process.env.DATABASE_PORT as string) || 5432,
       username: process.env.DATABASE_USER || 'user',
       password: process.env.DATABASE_PASSWORD || 'password',

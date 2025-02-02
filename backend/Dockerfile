@@ -1,20 +1,23 @@
-# Use the official Node.js image.
+# Use the latest Node.js version
 FROM node:20-alpine
 
-# Set the working directory.
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json.
+# Copy package.json and package-lock.json before installing dependencies
 COPY package*.json ./
 
-# Install dependencies.
-RUN npm install
+# Install dependencies (only production)
+RUN npm install --only=production
 
-# Copy the rest of the app code.
+# Copy the rest of the app code
 COPY . .
 
-# Expose the app on port 3000.
+# Set environment
+ENV NODE_ENV=production
+
+# Expose the app on port 3000
 EXPOSE 3000
 
-# Start the app.
+# Start the app
 CMD ["npm", "run", "start"]

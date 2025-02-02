@@ -1,26 +1,27 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../pages/AuthContext';
-import '../styles/Header.css';
+import { Link } from 'react-router-dom';
+import {useAuth} from "../pages/AuthContext.tsx";
+import '../styles/header.css';
 
 function Header() {
     const { user, logout } = useAuth();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-    };
 
     return (
         <header className="header">
-            <nav className="nav">
-                <Link to="/" className="nav-logo">ShortURL</Link>
-                <div className="nav-links">
-                    <Link to="/my-urls" className="nav-link">My URLs</Link>
+            <nav className="nav-container">
+                <div className="nav-left">
+                    <Link to="/">Home</Link>
+                </div>
+                <div className="nav-right">
                     {user ? (
-                        <button onClick={handleLogout} className="nav-link logout-btn">Logout</button>
+                        <>
+                            <Link to="/my-urls">My URLs</Link>
+                            <button onClick={logout} className="logout-btn">Logout</button>
+                        </>
                     ) : (
-                        <Link to="/login" className="nav-link">Login</Link>
+                        <>
+                            <Link to="/register">Register</Link>
+                            <Link to="/login">Login</Link>
+                        </>
                     )}
                 </div>
             </nav>

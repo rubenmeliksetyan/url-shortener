@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config/api';
-import '../styles/Home.css';
+import '../styles/home.css';
 import axiosInstance from "../axiosConfig.ts";
 
 function Home() {
