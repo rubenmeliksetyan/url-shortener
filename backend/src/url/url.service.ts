@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException, ConflictException, Req, ForbiddenException} from '@nestjs/common';
+import {Injectable, NotFoundException, ConflictException, ForbiddenException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import * as crypto from 'crypto';
