@@ -1,0 +1,47 @@
+.stats-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.tooltip-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.url-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px; /* ✅ Adjust based on your design */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.url-text:hover {
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    max-width: 400px;
+    z-index: 10;
+}

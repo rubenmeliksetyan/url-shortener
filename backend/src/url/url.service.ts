@@ -1,10 +1,10 @@
-import {Injectable, NotFoundException, ConflictException, Req} from '@nestjs/common';
+import {Injectable, NotFoundException, ConflictException, Req, ForbiddenException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import * as crypto from 'crypto';
 import {Url} from "./url.entity";
 import {User} from "../user/user.entity";
-import {CreateUrlDto, UpdateUrlDto} from "../common/dto/url.dto";
+import {CreateUrlDto} from "../common/dto/url.dto";
 import {VisitService} from "../visit/visit.service";
 
 @Injectable()
@@ -18,36 +18,52 @@ export class UrlService {
     ) {
     }
 
-    async createUrl(createUrlDto: CreateUrlDto): Promise<Url> {
-        const {originalUrl} = createUrlDto;
+    async findByUserId(userId: number): Promise<Url[]> {
+        return this.urlRepository.find({
+            where: { user: { id: userId } },
+            relations: ['user'],
+            select: ['id', 'slug', 'originalUrl'],
+        });
+    }
 
-        const user = await this.userRepository.findOne({where: {id: createUrlDto.userId}});
-        if (!user) {
-            throw new NotFoundException('User not found');
+    async createUrl(createUrlDto: CreateUrlDto): Promise<Url> {
+        const { originalUrl, userId } = createUrlDto;
+        let { slug } = createUrlDto;
+
+        if (slug && await this.urlRepository.findOne({ where: { slug } })) {
+            throw new ConflictException('Slug is already in use');
         }
 
-        let slug = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 6);
-
-        while (await this.urlRepository.findOne({where: {slug: slug}})) {
+        while (!slug || await this.urlRepository.findOne({ where: { slug } })) {
             slug = crypto.createHash('md5').update(originalUrl).digest('hex').substring(0, 6);
         }
 
+        return await this.urlRepository.save(
+            this.urlRepository.create({ originalUrl, slug, user: { id: userId } })
+        );
 
-        const newUrl = this.urlRepository.create({originalUrl, slug: slug, user});
-
-        return this.urlRepository.save(newUrl);
     }
 
-    async updateUrl(id: number, updateUrlDto: UpdateUrlDto): Promise<Url> {
-        const {slug} = updateUrlDto;
+    async updateSlug(currentSlug: string, newSlug: string, userId: number) {
 
-        const url = await this.urlRepository.findOne({where: {id}, relations: ['user']});
+        const url = await this.urlRepository.findOne({
+            where: { slug: currentSlug },
+            relations: ['user'],
+        });
+
         if (!url) {
             throw new NotFoundException('URL not found');
         }
+        if (url.user.id !== userId) {
+            throw new ForbiddenException('You do not have permission to edit this URL');
+        }
 
-        url.slug = slug;
+        const existingUrl = await this.urlRepository.findOne({ where: { slug: newSlug } });
+        if (existingUrl) {
+            throw new ForbiddenException('Slug is already in use');
+        }
 
+        url.slug = newSlug;
         return this.urlRepository.save(url);
     }
 

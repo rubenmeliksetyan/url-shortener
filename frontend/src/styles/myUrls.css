@@ -1,0 +1,98 @@
+.container {
+    max-width: 40%;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.url-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.url-table th,
+.url-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.url-table th {
+    background: #6c5ce7;
+    color: white;
+    text-align: center;
+}
+
+.url-link {
+    color: #6c5ce7;
+    font-weight: bold;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 300px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.copy-btn,
+.edit-btn,
+.stats-btn {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+}
+
+.copy-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+.copy-btn:hover {
+    background-color: #43a047;
+}
+
+.edit-btn {
+    background-color: #6c5ce7;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #5a4bcf;
+}
+
+.stats-btn {
+    background-color: #ff9800;
+    color: white;
+}
+
+.stats-btn:hover {
+    background-color: #e68900;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}

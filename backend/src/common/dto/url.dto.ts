@@ -6,12 +6,10 @@ export class CreateUrlDto {
     originalUrl: string;
 
     @IsOptional()
+    @IsString()
+    slug?: string;
+
+    @IsOptional()
     @IsInt()
     userId?: number;
-}
-
-export class UpdateUrlDto {
-    @IsString()
-    @IsNotEmpty()
-    slug: string;
 }

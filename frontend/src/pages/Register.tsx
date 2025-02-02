@@ -23,13 +23,36 @@ function Register() {
     };
 
     return (
-        <form onSubmit={handleRegister}>
-            <h2>Register</h2>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-            <button type="submit">Register</button>
-        </form>
+        <div className="register-container">
+            <form onSubmit={handleRegister} className="register-form">
+                <h2 className="form-title">Register</h2>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="form-input"
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="form-input"
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-input"
+                    required
+                />
+                <button type="submit" className="submit-btn">Register</button>
+            </form>
+        </div>
     );
 }
 

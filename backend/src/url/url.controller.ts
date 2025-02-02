@@ -1,18 +1,14 @@
 import {
     Controller,
     Get,
-    Param,
-    Res,
     NotFoundException,
     Post,
-    Put,
     UsePipes,
     ValidationPipe,
-    Body, UseGuards, Req,
+    Body, UseGuards, Req, Patch, Param,
 } from '@nestjs/common';
-import {Response} from 'express';
 import {UrlService} from "./url.service";
-import {CreateUrlDto, UpdateUrlDto} from "../common/dto/url.dto";
+import {CreateUrlDto} from "../common/dto/url.dto";
 import {Url} from "./url.entity";
 import {AuthGuard} from "../user/auth.guard";
 import {VisitService} from "../visit/visit.service";
@@ -26,6 +22,32 @@ export class UrlController {
     ) {
     }
 
+    @Post()
+    @UsePipes(new ValidationPipe())
+    async createSlug(
+        @Body() createUrlDto: CreateUrlDto,
+        @Req() req
+    ): Promise<Url> {
+        createUrlDto.userId = req.user.id
+        return await this.urlService.createUrl(createUrlDto);
+    }
+
+    @Get()
+    async getUserUrls(@Req() req) {
+        const userId = req.user.id;
+        return this.urlService.findByUserId(userId);
+    }
+
+    @Patch(':slug')
+    async updateSlug(
+        @Param('slug') currentSlug: string,
+        @Body() body: { slug: string },
+        @Req() req
+    ): Promise<Url> {
+        const userId = req.user.id;
+        return this.urlService.updateSlug(currentSlug, body.slug, Number(userId));
+    }
+
     @Get(':slug')
     async redirectToOriginal(@Param('slug') slug: string) {
         const url = await this.urlService.findBySlug(slug);
@@ -37,16 +59,8 @@ export class UrlController {
         return {originalUrl: url.originalUrl};
     }
 
-    @Post('slug')
-    @UsePipes(new ValidationPipe())
-    async createSlug(@Body() createUrlDto: CreateUrlDto, @Req() req): Promise<Url> {
-        createUrlDto.userId = req.user.id
-        return await this.urlService.createUrl(createUrlDto);
-    }
-
-    @Put(':user-id/slug')
-    @UsePipes(new ValidationPipe())
-    async updateSlug(@Param('user-id') userId: number,@Body() updateUrlDto: UpdateUrlDto): Promise<Url> {
-        return await this.urlService.updateUrl(userId, updateUrlDto);
+    @Get(':slug/stats')
+    async getStats(@Param('slug') slug: string) {
+        return await this.urlService.getUrlStats(slug);
     }
 }

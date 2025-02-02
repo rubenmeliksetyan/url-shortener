@@ -1,0 +1,88 @@
+/* Center the form in the middle of the screen */
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height to center vertically */
+    background-color: #f9f9f9;
+}
+
+/* Small box around the form */
+.home-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;  /* Smaller width */
+    text-align: center;
+}
+
+/* Form styling */
+.shorten-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Inputs and button should be the same size */
+.form-input, .submit-btn {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Submit button */
+.submit-btn {
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-btn:hover {
+    background-color: #5a4bcf;
+}
+
+/* Error message */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Shortened URL display */
+.result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Short URL text */
+.short-url {
+    background: #f3f3f3;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    word-break: break-word;
+    width: 100%;
+    text-align: center;
+}
+
+/* Copy button */
+.copy-btn {
+    padding: 6px 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.copy-btn:hover {
+    background-color: #43a047;
+}
